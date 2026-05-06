@@ -379,6 +379,7 @@
             <div class="actions-bar no-print">
                 <button id="btn-adicionar" class="btn btn-success">ADICIONAR COMPRA</button>
                 <div>
+                    <button id="btn-carregar-nuvem" class="btn" style="background: #eab308; color: #000; font-weight: bold;">BAIXAR DA NUVEM</button>
                     <button id="btn-limpar" class="btn btn-danger">LIMPAR</button>
                     <button id="btn-pagar" class="btn btn-primary">REGISTRAR PGTO</button>
                     <button id="btn-imprimir" class="btn" style="background: #000; color: #fff;">IMPRIMIR</button>
@@ -449,7 +450,6 @@
         const db = getFirestore(app);
         console.log("Firebase e Firestore inicializados com sucesso via CDN!");
 
-        // Funções para salvar e carregar dados na nuvem
         window.salvarNoFirebase = async function(dados, valorLitro, dataPagamento) {
             try {
                 await setDoc(doc(db, "controle", "leite"), {
@@ -491,37 +491,19 @@
             const btnImprimir = document.getElementById('btn-imprimir');
             const btnDarkMode = document.getElementById('toggle-dark-mode');
             const btnAdicionar = document.getElementById('btn-adicionar');
+            const btnCarregarNuvem = document.getElementById('btn-carregar-nuvem');
 
             let dados = [];
             let valorLitro = 0.00;
             let darkMode = localStorage.getItem('darkModeCompacto') === 'true';
             let dataPagamento = '---';
 
-            // 1. Tenta carregar do Firebase Firestore, caso contrário usa o localStorage
-            if (window.carregarDoFirebase) {
-                const fbData = await window.carregarDoFirebase();
-                if (fbData) {
-                    dados = fbData.dados || [];
-                    valorLitro = fbData.valorLitro || 0.00;
-                    dataPagamento = fbData.dataPagamento || '---';
-
-                    localStorage.setItem('dadosLeiteCompacto', JSON.stringify(dados));
-                    localStorage.setItem('valorLitroCompacto', valorLitro);
-                    localStorage.setItem('dataPagamentoCompacto', dataPagamento);
-                } else {
-                    dados = JSON.parse(localStorage.getItem('dadosLeiteCompacto')) || [];
-                    valorLitro = parseFloat(localStorage.getItem('valorLitroCompacto')) || 0.00;
-                    dataPagamento = localStorage.getItem('dataPagamentoCompacto') || '---';
-                }
-            } else {
-                dados = JSON.parse(localStorage.getItem('dadosLeiteCompacto')) || [];
-                valorLitro = parseFloat(localStorage.getItem('valorLitroCompacto')) || 0.00;
-                dataPagamento = localStorage.getItem('dataPagamentoCompacto') || '---';
+            // Função para atualizar os dados da tela usando a fonte selecionada
+            function renderizarDados() {
+                valorLitroInput.value = valorLitro;
+                dataPagamentoSpan.textContent = dataPagamento;
+                inicializarTabela();
             }
-
-            valorLitroInput.value = valorLitro;
-            dataPagamentoSpan.textContent = dataPagamento;
-            if (darkMode) document.body.setAttribute('data-theme', 'dark');
 
             function inicializarTabela() {
                 corpoTabela.innerHTML = '';
@@ -567,7 +549,6 @@
                 localStorage.setItem('dadosLeiteCompacto', JSON.stringify(dados));
                 localStorage.setItem('valorLitroCompacto', valorLitro);
 
-                // Sincroniza com a nuvem
                 if (window.salvarNoFirebase) {
                     window.salvarNoFirebase(dados, valorLitro, dataPagamentoSpan.textContent);
                 }
@@ -596,6 +577,40 @@
                 totalPagoSpan.textContent = `R$ ${totalPago.toFixed(2).replace('.', ',')}`;
                 mesReferenciaSpan.textContent = meses.size > 0 ? Array.from(meses).sort().join(' / ') : '---';
             }
+
+            // Botão para forçar a leitura do Firebase
+            btnCarregarNuvem.addEventListener('click', async () => {
+                if (window.carregarDoFirebase) {
+                    const fbData = await window.carregarDoFirebase();
+                    if (fbData) {
+                        dados = fbData.dados || [];
+                        valorLitro = fbData.valorLitro || 0.00;
+                        dataPagamento = fbData.dataPagamento || '---';
+
+                        localStorage.setItem('dadosLeiteCompacto', JSON.stringify(dados));
+                        localStorage.setItem('valorLitroCompacto', valorLitro);
+                        localStorage.setItem('dataPagamentoCompacto', dataPagamento);
+
+                        renderizarDados();
+                        alert('Dados carregados da nuvem com sucesso!');
+                    } else {
+                        alert('Nenhum dado encontrado na nuvem.');
+                    }
+                }
+            });
+
+            // Carrega dados iniciais do localStorage
+            dados = JSON.parse(localStorage.getItem('dadosLeiteCompacto')) || [];
+            valorLitro = parseFloat(localStorage.getItem('valorLitroCompacto')) || 0.00;
+            dataPagamento = localStorage.getItem('dataPagamentoCompacto') || '---';
+
+            valorLitroInput.value = valorLitro;
+            dataPagamentoSpan.textContent = dataPagamento;
+
+            // Inicializa a tabela ao carregar a página
+            inicializarTabela();
+
+            if (darkMode) document.body.setAttribute('data-theme', 'dark');
 
             btnAdicionar.addEventListener('click', () => { adicionarLinha(); corpoTabela.lastElementChild.querySelector('.input-data').focus(); });
             valorLitroInput.addEventListener('input', salvarEAtualizar);
@@ -631,8 +646,6 @@
                 document.body.setAttribute('data-theme', darkMode ? 'dark' : ''); 
                 localStorage.setItem('darkModeCompacto', darkMode); 
             });
-            
-            inicializarTabela();
         });
     </script>
 
