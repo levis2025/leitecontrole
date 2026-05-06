@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle Mensal de Leite - Recibo</title>
+    <link rel="icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text y=%22.9em%22 font-size=%2290%22&gt;%F0%9F%A5%9B&lt;/text&gt;&lt;/svg&gt;">
+    <style>
+        :root {
+            --bg-color: #f3f4f6;
+            --container-bg: #ffffff;
+            --text-color: #1f2937;
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --secondary-color: #059669;
+            --secondary-hover: #047857;
+            --danger-color: #dc2626;
+            --danger-hover: #b91c1c;
+            --border-color: #e5e7eb;
+            --header-bg: #f9fafb;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --font-main: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+            --font-mono: 'Courier New', Courier, monospace;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #111827;
+            --container-bg: #1f2937;
+            --text-color: #f9fafb;
+            --primary-color: #3b82f6;
+            --primary-hover: #2563eb;
+            --secondary-color: #10b981;
+            --secondary-hover: #059669;
+            --danger-color: #ef4444;
+            --danger-hover: #dc2626;
+            --border-color: #374151;
+            --header-bg: #1f2937;
+            --shadow-sm: none;
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-main); }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 24px;
+            transition: background-color 0.3s, color 0.3s;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: var(--container-bg);
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 20px;
+            margin-bottom: 24px;
+        }
+
+        h1 { 
+            font-size: 1.8rem; 
+            font-weight: 700;
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            margin-bottom: 6px; 
+            color: var(--primary-color);
+        }
+
+        header p {
+            color: #6b7280;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .header-info {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 20px;
+            font-weight: 600;
+            background: var(--header-bg);
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .input-group { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+        }
+
+        input {
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            background: var(--container-bg);
+            color: var(--text-color);
+            font-family: var(--font-mono);
+            font-size: 14px;
+            border-radius: 6px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+        }
+
+        .actions-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            background: #e5e7eb;
+            color: var(--text-color);
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .btn:hover {
+            filter: brightness(0.9);
+            transform: translateY(-1px);
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin-bottom: 24px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th {
+            background: var(--header-bg);
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-color);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--container-bg);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        td input {
+            font-family: var(--font-mono);
+        }
+
+        footer {
+            margin-top: 24px;
+            border-top: 2px solid var(--border-color);
+            padding-top: 20px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .summary-item {
+            background: var(--header-bg);
+            border: 1px solid var(--border-color);
+            padding: 16px;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .summary-item label { 
+            display: block; 
+            font-size: 0.7rem; 
+            text-transform: uppercase; 
+            margin-bottom: 4px; 
+            color: #6b7280;
+            letter-spacing: 0.5px;
+        }
+
+        .summary-item span { 
+            font-size: 1.25rem; 
+            font-weight: 700; 
+        }
+
+        .signature-area {
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .sig-line {
+            border-top: 1px solid #6b7280;
+            width: 200px;
+            text-align: center;
+            padding-top: 8px;
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        @media print {
+            @page { 
+                margin: 1cm; 
+                size: A4;
+            }
+            body { background: white; color: black !important; padding: 0; font-size: 12px; }
+            .container { 
+                box-shadow: none; 
+                border: none; 
+                width: 100%; 
+                max-width: none; 
+                padding: 0;
+            }
+            .no-print, .btn, #toggle-dark-mode, .btn-remover { display: none !important; }
+            
+            header { border-bottom: 1px solid #000; padding-bottom: 12px; margin-bottom: 16px; }
+            h1 { font-size: 1.4rem; color: black; }
+            
+            input { border: none !important; background: transparent !important; color: black !important; font-size: 13px; padding: 0; font-weight: bold; }
+            
+            .header-info {
+                background: transparent;
+                border: none;
+                padding: 6px 0;
+            }
+
+            .table-wrapper { border: none; border-radius: 0; overflow: visible; }
+            table { border: 1px solid #000; border-radius: 0; }
+            th { border-bottom: 1px solid #000; background: transparent; padding: 6px; font-size: 11px; }
+            td { padding: 4px 6px; border-bottom: 1px solid #000; background: transparent; }
+            
+            .summary-grid { gap: 12px; margin-bottom: 16px; grid-template-columns: 1fr 1fr 1fr; }
+            .summary-item { background: transparent; border: 1px solid #000; padding: 8px; border-radius: 0; box-shadow: none; }
+            .summary-item label { font-size: 10px; color: black; }
+            .summary-item span { font-size: 12px; }
+            
+            footer { margin-top: 16px; padding-top: 12px; border-top: 1px solid #000; }
+            .signature-area { margin-top: 40px; }
+            .sig-line { width: 180px; font-size: 10px; border-top: 1px solid #000; color: black; }
+        }
+
+        @media (max-width: 600px) {
+            body { padding: 8px; }
+            .container { padding: 12px; }
+            
+            .header-info {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+            
+            .input-group {
+                justify-content: space-between;
+            }
+
+            .input-group input {
+                width: 120px !important;
+            }
+            
+            .table-wrapper {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            
+            th, td {
+                padding: 8px 10px;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .actions-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .actions-bar > div {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .actions-bar .btn {
+                width: 100%;
+                padding: 12px;
+                font-size: 0.85rem;
+            }
+
+            .signature-area {
+                flex-direction: column;
+                gap: 40px;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body data-theme="dark">
+    <div class="container">
+        <div class="no-print" style="text-align: right; margin-bottom: 10px;">
+            <button id="toggle-dark-mode" class="btn">MODO ESCURO</button>
+        </div>
+
+        <header>
+            <h1>Relatório do Leite</h1>
+            <p>CONTROLE MENSAL DA EUNICE P. DO NASCIMENTO</p>
+            
+            <div class="header-info">
+                <div class="input-group">
+                    <span>PERÍODO:</span>
+                    <span id="mes-referencia">Maio de 2026</span>
+                </div>
+                <div class="input-group">
+                    <span>VALOR DO LITRO: R$</span>
+                    <input type="number" id="valor-litro" step="0.01" value="0.00" style="width: 70px;">
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="actions-bar no-print">
+                <button id="btn-adicionar" class="btn btn-success">ADICIONAR COMPRA</button>
+                <div>
+                    <button id="btn-limpar" class="btn btn-danger">LIMPAR</button>
+                    <button id="btn-pagar" class="btn btn-primary">REGISTRAR PGTO</button>
+                    <button id="btn-imprimir" class="btn" style="background: #000; color: #fff;">IMPRIMIR</button>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>DATA</th>
+                            <th>LITROS</th>
+                            <th>(R$) UNID.</th>
+                            <th>TOTAL (R$)</th>
+                            <th class="no-print">AÇÕES</th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpo-tabela"><tr>
+                        <td><input type="date" class="input-data" value="2026-05-01"></td>
+                        <td><input type="number" step="0.1" class="input-litros" value="2" style="width: 65px;"></td>
+                        <td class="valor-unitario">R$ 3,50</td>
+                        <td class="total-linha">R$ 7,00</td>
+                        <td class="no-print"><button class="btn btn-danger btn-remover" style="padding: 4px 8px; font-size: 0.75rem;">X</button></td>
+                    </tr></tbody>
+                </table>
+            </div>
+        </main>
+
+        <footer>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <label>Volume Total</label>
+                    <span id="total-litros">0.00</span> L
+                </div>
+                <div class="summary-item">
+                    <label>Valor Total a Pagar</label>
+                    <span id="total-pago">R$ 0,00</span>
+                </div>
+                <div class="summary-item">
+                    <label>Data do Pagamento</label>
+                    <span id="data-pagamento">---</span>
+                </div>
+            </div>
+
+            <p style="text-align: center; font-size: 0.90rem; margin-top: 30px; opacity: 0.7;">
+                O Senhor é o meu Pastor; e nada me faltará.
+            </p>
+        </footer>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB3ZAE5OLyj5xis7MvIfrM6AH-5rBqwq18",
+            authDomain: "controle-leite.firebaseapp.com",
+            projectId: "controle-leite",
+            storageBucket: "controle-leite.firebasestorage.app",
+            messagingSenderId: "405200060701",
+            appId: "1:405200060701:web:00df03071d718b96ca21f4",
+            measurementId: "G-Q1T041FZSY"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+        console.log("Firebase e Firestore inicializados com sucesso via CDN!");
+
+        // Funções para salvar e carregar dados na nuvem
+        window.salvarNoFirebase = async function(dados, valorLitro, dataPagamento) {
+            try {
+                await setDoc(doc(db, "controle", "leite"), {
+                    dados: dados,
+                    valorLitro: valorLitro,
+                    dataPagamento: dataPagamento
+                });
+                console.log("Sincronizado com o Firestore.");
+            } catch (error) {
+                console.error("Erro ao sincronizar com a nuvem: ", error);
+            }
+        };
+
+        window.carregarDoFirebase = async function() {
+            try {
+                const docSnap = await getDoc(doc(db, "controle", "leite"));
+                if (docSnap.exists()) {
+                    return docSnap.data();
+                } else {
+                    return null;
+                }
+            } catch (error) {
+                console.error("Erro ao ler da nuvem: ", error);
+                return null;
+            }
+        };
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const corpoTabela = document.getElementById('corpo-tabela');
+            const valorLitroInput = document.getElementById('valor-litro');
+            const totalLitrosSpan = document.getElementById('total-litros');
+            const totalPagoSpan = document.getElementById('total-pago');
+            const mesReferenciaSpan = document.getElementById('mes-referencia');
+            const dataPagamentoSpan = document.getElementById('data-pagamento');
+            const btnLimpar = document.getElementById('btn-limpar');
+            const btnPagar = document.getElementById('btn-pagar');
+            const btnImprimir = document.getElementById('btn-imprimir');
+            const btnDarkMode = document.getElementById('toggle-dark-mode');
+            const btnAdicionar = document.getElementById('btn-adicionar');
+
+            let dados = [];
+            let valorLitro = 0.00;
+            let darkMode = localStorage.getItem('darkModeCompacto') === 'true';
+            let dataPagamento = '---';
+
+            // 1. Tenta carregar do Firebase Firestore, caso contrário usa o localStorage
+            if (window.carregarDoFirebase) {
+                const fbData = await window.carregarDoFirebase();
+                if (fbData) {
+                    dados = fbData.dados || [];
+                    valorLitro = fbData.valorLitro || 0.00;
+                    dataPagamento = fbData.dataPagamento || '---';
+
+                    localStorage.setItem('dadosLeiteCompacto', JSON.stringify(dados));
+                    localStorage.setItem('valorLitroCompacto', valorLitro);
+                    localStorage.setItem('dataPagamentoCompacto', dataPagamento);
+                } else {
+                    dados = JSON.parse(localStorage.getItem('dadosLeiteCompacto')) || [];
+                    valorLitro = parseFloat(localStorage.getItem('valorLitroCompacto')) || 0.00;
+                    dataPagamento = localStorage.getItem('dataPagamentoCompacto') || '---';
+                }
+            } else {
+                dados = JSON.parse(localStorage.getItem('dadosLeiteCompacto')) || [];
+                valorLitro = parseFloat(localStorage.getItem('valorLitroCompacto')) || 0.00;
+                dataPagamento = localStorage.getItem('dataPagamentoCompacto') || '---';
+            }
+
+            valorLitroInput.value = valorLitro;
+            dataPagamentoSpan.textContent = dataPagamento;
+            if (darkMode) document.body.setAttribute('data-theme', 'dark');
+
+            function inicializarTabela() {
+                corpoTabela.innerHTML = '';
+                if (dados.length === 0) {
+                    adicionarLinha();
+                } else {
+                    dados.forEach(item => adicionarLinha(item));
+                }
+                atualizarTotais();
+            }
+
+            function adicionarLinha(item = { data: '', litros: '' }) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><input type="date" class="input-data" value="${item.data}"></td>
+                    <td><input type="number" step="0.1" class="input-litros" value="${item.litros}" style="width: 65px;"></td>
+                    <td class="valor-unitario">R$ ${valorLitro.toFixed(2).replace('.', ',')}</td>
+                    <td class="total-linha">R$ 0,00</td>
+                    <td class="no-print"><button class="btn btn-danger btn-remover" style="padding: 4px 8px; font-size: 0.75rem;">X</button></td>
+                `;
+                corpoTabela.appendChild(tr);
+
+                const inputData = tr.querySelector('.input-data');
+                const inputLitros = tr.querySelector('.input-litros');
+                const btnRemover = tr.querySelector('.btn-remover');
+
+                inputData.addEventListener('change', salvarEAtualizar);
+                inputLitros.addEventListener('input', salvarEAtualizar);
+                btnRemover.addEventListener('click', () => { tr.remove(); salvarEAtualizar(); });
+                atualizarTotais();
+            }
+
+            function salvarEAtualizar() {
+                const novasLinhas = [];
+                corpoTabela.querySelectorAll('tr').forEach(row => {
+                    const data = row.querySelector('.input-data').value;
+                    const litros = row.querySelector('.input-litros').value;
+                    if (data || litros) novasLinhas.push({ data, litros });
+                });
+                dados = novasLinhas;
+                valorLitro = parseFloat(valorLitroInput.value) || 0;
+
+                localStorage.setItem('dadosLeiteCompacto', JSON.stringify(dados));
+                localStorage.setItem('valorLitroCompacto', valorLitro);
+
+                // Sincroniza com a nuvem
+                if (window.salvarNoFirebase) {
+                    window.salvarNoFirebase(dados, valorLitro, dataPagamentoSpan.textContent);
+                }
+
+                atualizarTotais();
+            }
+
+            function atualizarTotais() {
+                let totalLitros = 0, totalPago = 0;
+                const meses = new Set();
+                corpoTabela.querySelectorAll('tr').forEach(row => {
+                    const litros = parseFloat(row.querySelector('.input-litros').value) || 0;
+                    const dataVal = row.querySelector('.input-data').value;
+                    const totalLinha = litros * valorLitro;
+                    totalLitros += litros;
+                    totalPago += totalLinha;
+                    row.querySelector('.valor-unitario').textContent = `R$ ${valorLitro.toFixed(2).replace('.', ',')}`;
+                    row.querySelector('.total-linha').textContent = `R$ ${totalLinha.toFixed(2).replace('.', ',')}`;
+                    if (dataVal) {
+                        const d = new Date(dataVal + 'T00:00:00');
+                        const m = d.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+                        meses.add(m.charAt(0).toUpperCase() + m.slice(1));
+                    }
+                });
+                totalLitrosSpan.textContent = totalLitros.toFixed(2);
+                totalPagoSpan.textContent = `R$ ${totalPago.toFixed(2).replace('.', ',')}`;
+                mesReferenciaSpan.textContent = meses.size > 0 ? Array.from(meses).sort().join(' / ') : '---';
+            }
+
+            btnAdicionar.addEventListener('click', () => { adicionarLinha(); corpoTabela.lastElementChild.querySelector('.input-data').focus(); });
+            valorLitroInput.addEventListener('input', salvarEAtualizar);
+            
+            btnLimpar.addEventListener('click', () => { 
+                if(confirm('Limpar dados?')) { 
+                    dados = []; 
+                    localStorage.removeItem('dadosLeiteCompacto'); 
+                    localStorage.removeItem('dataPagamentoCompacto'); 
+                    dataPagamentoSpan.textContent = '---'; 
+                    
+                    if (window.salvarNoFirebase) {
+                        window.salvarNoFirebase(dados, valorLitro, '---');
+                    }
+                    
+                    inicializarTabela(); 
+                } 
+            });
+            
+            btnPagar.addEventListener('click', () => { 
+                const h = new Date().toLocaleDateString('pt-BR'); 
+                dataPagamentoSpan.textContent = h; 
+                localStorage.setItem('dataPagamentoCompacto', h); 
+                
+                if (window.salvarNoFirebase) {
+                    window.salvarNoFirebase(dados, valorLitro, h);
+                }
+            });
+            
+            btnImprimir.addEventListener('click', () => window.print());
+            btnDarkMode.addEventListener('click', () => { 
+                darkMode = !darkMode; 
+                document.body.setAttribute('data-theme', darkMode ? 'dark' : ''); 
+                localStorage.setItem('darkModeCompacto', darkMode); 
+            });
+            
+            inicializarTabela();
+        });
+    </script>
+
+</body></html>
