@@ -480,6 +480,15 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
+            // VERIFICAÇÃO DE SENHA
+            const SENHA_ACESSO = "6311";
+            const senhaDigitada = prompt("Digite a senha de acesso ao Controle Mensal de Leite:");
+            if (senhaDigitada !== SENHA_ACESSO) {
+                alert("Senha incorreta. A página será bloqueada.");
+                document.body.innerHTML = "<h2 style='color: #dc2626; text-align: center; margin-top: 50px;'>Acesso Negado. Recarregue a página para tentar novamente.</h2>";
+                throw new Error("Acesso negado");
+            }
+
             const corpoTabela = document.getElementById('corpo-tabela');
             const valorLitroInput = document.getElementById('valor-litro');
             const totalLitrosSpan = document.getElementById('total-litros');
