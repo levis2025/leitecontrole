@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
+<html lang="pt-BR">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Controle Mensal de Leite - Recibo</title>
     <link rel="icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text y=%22.9em%22 font-size=%2290%22&gt;%F0%9F%A5%9B&lt;/text&gt;&lt;/svg&gt;">
@@ -37,6 +38,12 @@
             --header-bg: #1f2937;
             --shadow-sm: none;
             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        /* CORREÇÃO DO BOTÃO MODO ESCURO */
+        [data-theme="dark"] #toggle-dark-mode {
+            background-color: #ffffff;
+            color: #000000 !important;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-main); }
@@ -198,10 +205,6 @@
             border-bottom: none;
         }
 
-        td input {
-            font-family: var(--font-mono);
-        }
-
         footer {
             margin-top: 24px;
             border-top: 2px solid var(--border-color);
@@ -238,118 +241,16 @@
             font-weight: 700; 
         }
 
-        .signature-area {
-            margin-top: 40px;
-            display: flex;
-            justify-content: space-around;
-        }
-
-        .sig-line {
-            border-top: 1px solid #6b7280;
-            width: 200px;
-            text-align: center;
-            padding-top: 8px;
-            font-size: 0.75rem;
-            color: #6b7280;
-        }
-
         @media print {
-            @page { 
-                margin: 1cm; 
-                size: A4;
-            }
-            body { background: white; color: black !important; padding: 0; font-size: 12px; }
-            .container { 
-                box-shadow: none; 
-                border: none; 
-                width: 100%; 
-                max-width: none; 
-                padding: 0;
-            }
             .no-print, .btn, #toggle-dark-mode, .btn-remover { display: none !important; }
-            
-            header { border-bottom: 1px solid #000; padding-bottom: 12px; margin-bottom: 16px; }
-            h1 { font-size: 1.4rem; color: black; }
-            
-            input { border: none !important; background: transparent !important; color: black !important; font-size: 13px; padding: 0; font-weight: bold; }
-            
-            .header-info {
-                background: transparent;
-                border: none;
-                padding: 6px 0;
-            }
-
-            .table-wrapper { border: none; border-radius: 0; overflow: visible; }
-            table { border: 1px solid #000; border-radius: 0; }
-            th { border-bottom: 1px solid #000; background: transparent; padding: 6px; font-size: 11px; }
-            td { padding: 4px 6px; border-bottom: 1px solid #000; background: transparent; }
-            
-            .summary-grid { gap: 12px; margin-bottom: 16px; grid-template-columns: 1fr 1fr 1fr; }
-            .summary-item { background: transparent; border: 1px solid #000; padding: 8px; border-radius: 0; box-shadow: none; }
-            .summary-item label { font-size: 10px; color: black; }
-            .summary-item span { font-size: 12px; }
-            
-            footer { margin-top: 16px; padding-top: 12px; border-top: 1px solid #000; }
-            .signature-area { margin-top: 40px; }
-            .sig-line { width: 180px; font-size: 10px; border-top: 1px solid #000; color: black; }
+            body { background: white; color: black !important; }
+            .container { box-shadow: none; border: none; width: 100%; max-width: none; padding: 0; }
         }
 
         @media (max-width: 600px) {
-            body { padding: 8px; }
-            .container { padding: 12px; }
-            
-            .header-info {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 12px;
-            }
-            
-            .input-group {
-                justify-content: space-between;
-            }
-
-            .input-group input {
-                width: 120px !important;
-            }
-            
-            .table-wrapper {
-                display: block;
-                width: 100%;
-                overflow-x: auto;
-                white-space: nowrap;
-            }
-            
-            th, td {
-                padding: 8px 10px;
-            }
-
-            .summary-grid {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
-
-            .actions-bar {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .actions-bar > div {
-                display: flex;
-                flex-direction: column;
-                gap: 8px;
-            }
-
-            .actions-bar .btn {
-                width: 100%;
-                padding: 12px;
-                font-size: 0.85rem;
-            }
-
-            .signature-area {
-                flex-direction: column;
-                gap: 40px;
-                align-items: center;
-            }
+            .header-info { flex-direction: column; }
+            .summary-grid { grid-template-columns: 1fr; }
+            .actions-bar { flex-direction: column; }
         }
     </style>
 </head>
@@ -366,7 +267,7 @@
             <div class="header-info">
                 <div class="input-group">
                     <span>PERÍODO:</span>
-                    <span id="mes-referencia">Maio de 2026</span>
+                    <span id="mes-referencia">---</span>
                 </div>
                 <div class="input-group">
                     <span>VALOR DO LITRO: R$</span>
@@ -379,7 +280,6 @@
             <div class="actions-bar no-print">
                 <button id="btn-adicionar" class="btn btn-success">ADICIONAR COMPRA</button>
                 <div>
-                    <button id="btn-carregar-nuvem" class="btn" style="background: #eab308; color: #000; font-weight: bold;">BAIXAR DA NUVEM</button>
                     <button id="btn-limpar" class="btn btn-danger">LIMPAR</button>
                     <button id="btn-pagar" class="btn btn-primary">REGISTRAR PGTO</button>
                     <button id="btn-imprimir" class="btn" style="background: #000; color: #fff;">IMPRIMIR</button>
@@ -397,13 +297,7 @@
                             <th class="no-print">AÇÕES</th>
                         </tr>
                     </thead>
-                    <tbody id="corpo-tabela"><tr>
-                        <td><input type="date" class="input-data" value="2026-05-01"></td>
-                        <td><input type="number" step="0.1" class="input-litros" value="2" style="width: 65px;"></td>
-                        <td class="valor-unitario">R$ 3,50</td>
-                        <td class="total-linha">R$ 7,00</td>
-                        <td class="no-print"><button class="btn btn-danger btn-remover" style="padding: 4px 8px; font-size: 0.75rem;">X</button></td>
-                    </tr></tbody>
+                    <tbody id="corpo-tabela"></tbody>
                 </table>
             </div>
         </main>
@@ -432,7 +326,6 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js";
         import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -446,9 +339,7 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
         const db = getFirestore(app);
-        console.log("Firebase e Firestore inicializados com sucesso via CDN!");
 
         window.salvarNoFirebase = async function(dados, valorLitro, dataPagamento) {
             try {
@@ -457,20 +348,15 @@
                     valorLitro: valorLitro,
                     dataPagamento: dataPagamento
                 });
-                console.log("Sincronizado com o Firestore.");
             } catch (error) {
-                console.error("Erro ao sincronizar com a nuvem: ", error);
+                console.error("Erro ao sincronizar: ", error);
             }
         };
 
         window.carregarDoFirebase = async function() {
             try {
                 const docSnap = await getDoc(doc(db, "controle", "leite"));
-                if (docSnap.exists()) {
-                    return docSnap.data();
-                } else {
-                    return null;
-                }
+                return docSnap.exists() ? docSnap.data() : null;
             } catch (error) {
                 console.error("Erro ao ler da nuvem: ", error);
                 return null;
@@ -480,13 +366,11 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
-            // VERIFICAÇÃO DE SENHA
             const SENHA_ACESSO = "6311";
-            const senhaDigitada = prompt("Digite a senha de acesso ao Controle Mensal de Leite:");
+            const senhaDigitada = prompt("Digite a senha de acesso:");
             if (senhaDigitada !== SENHA_ACESSO) {
-                alert("Senha incorreta. A página será bloqueada.");
-                document.body.innerHTML = "<h2 style='color: #dc2626; text-align: center; margin-top: 50px;'>Acesso Negado. Recarregue a página para tentar novamente.</h2>";
-                throw new Error("Acesso negado");
+                document.body.innerHTML = "<h2 style='color: #dc2626; text-align: center;'>Acesso Negado.</h2>";
+                return;
             }
 
             const corpoTabela = document.getElementById('corpo-tabela');
@@ -495,32 +379,15 @@
             const totalPagoSpan = document.getElementById('total-pago');
             const mesReferenciaSpan = document.getElementById('mes-referencia');
             const dataPagamentoSpan = document.getElementById('data-pagamento');
-            const btnLimpar = document.getElementById('btn-limpar');
-            const btnPagar = document.getElementById('btn-pagar');
-            const btnImprimir = document.getElementById('btn-imprimir');
-            const btnDarkMode = document.getElementById('toggle-dark-mode');
-            const btnAdicionar = document.getElementById('btn-adicionar');
-            const btnCarregarNuvem = document.getElementById('btn-carregar-nuvem');
 
             let dados = [];
             let valorLitro = 0.00;
-            let darkMode = localStorage.getItem('darkModeCompacto') === 'true';
             let dataPagamento = '---';
-
-            // Função para atualizar os dados da tela usando a fonte selecionada
-            function renderizarDados() {
-                valorLitroInput.value = valorLitro;
-                dataPagamentoSpan.textContent = dataPagamento;
-                inicializarTabela();
-            }
 
             function inicializarTabela() {
                 corpoTabela.innerHTML = '';
-                if (dados.length === 0) {
-                    adicionarLinha();
-                } else {
-                    dados.forEach(item => adicionarLinha(item));
-                }
+                if (dados.length === 0) adicionarLinha();
+                else dados.forEach(item => adicionarLinha(item));
                 atualizarTotais();
             }
 
@@ -529,19 +396,15 @@
                 tr.innerHTML = `
                     <td><input type="date" class="input-data" value="${item.data}"></td>
                     <td><input type="number" step="0.1" class="input-litros" value="${item.litros}" style="width: 65px;"></td>
-                    <td class="valor-unitario">R$ ${valorLitro.toFixed(2).replace('.', ',')}</td>
+                    <td class="valor-unitario">R$ 0,00</td>
                     <td class="total-linha">R$ 0,00</td>
-                    <td class="no-print"><button class="btn btn-danger btn-remover" style="padding: 4px 8px; font-size: 0.75rem;">X</button></td>
+                    <td class="no-print"><button class="btn btn-danger btn-remover">X</button></td>
                 `;
                 corpoTabela.appendChild(tr);
 
-                const inputData = tr.querySelector('.input-data');
-                const inputLitros = tr.querySelector('.input-litros');
-                const btnRemover = tr.querySelector('.btn-remover');
-
-                inputData.addEventListener('change', salvarEAtualizar);
-                inputLitros.addEventListener('input', salvarEAtualizar);
-                btnRemover.addEventListener('click', () => { tr.remove(); salvarEAtualizar(); });
+                tr.querySelector('.input-data').addEventListener('change', salvarEAtualizar);
+                tr.querySelector('.input-litros').addEventListener('input', salvarEAtualizar);
+                tr.querySelector('.btn-remover').addEventListener('click', () => { tr.remove(); salvarEAtualizar(); });
                 atualizarTotais();
             }
 
@@ -558,22 +421,19 @@
                 localStorage.setItem('dadosLeiteCompacto', JSON.stringify(dados));
                 localStorage.setItem('valorLitroCompacto', valorLitro);
 
-                if (window.salvarNoFirebase) {
-                    window.salvarNoFirebase(dados, valorLitro, dataPagamentoSpan.textContent);
-                }
-
+                if (window.salvarNoFirebase) window.salvarNoFirebase(dados, valorLitro, dataPagamentoSpan.textContent);
                 atualizarTotais();
             }
 
             function atualizarTotais() {
-                let totalLitros = 0, totalPago = 0;
+                let totalL = 0, totalP = 0;
                 const meses = new Set();
                 corpoTabela.querySelectorAll('tr').forEach(row => {
                     const litros = parseFloat(row.querySelector('.input-litros').value) || 0;
                     const dataVal = row.querySelector('.input-data').value;
                     const totalLinha = litros * valorLitro;
-                    totalLitros += litros;
-                    totalPago += totalLinha;
+                    totalL += litros;
+                    totalP += totalLinha;
                     row.querySelector('.valor-unitario').textContent = `R$ ${valorLitro.toFixed(2).replace('.', ',')}`;
                     row.querySelector('.total-linha').textContent = `R$ ${totalLinha.toFixed(2).replace('.', ',')}`;
                     if (dataVal) {
@@ -582,80 +442,57 @@
                         meses.add(m.charAt(0).toUpperCase() + m.slice(1));
                     }
                 });
-                totalLitrosSpan.textContent = totalLitros.toFixed(2);
-                totalPagoSpan.textContent = `R$ ${totalPago.toFixed(2).replace('.', ',')}`;
+                totalLitrosSpan.textContent = totalL.toFixed(2);
+                totalPagoSpan.textContent = `R$ ${totalP.toFixed(2).replace('.', ',')}`;
                 mesReferenciaSpan.textContent = meses.size > 0 ? Array.from(meses).sort().join(' / ') : '---';
             }
 
-            // Botão para forçar a leitura do Firebase
-            btnCarregarNuvem.addEventListener('click', async () => {
+            // CARREGAMENTO AUTOMÁTICO AO INICIAR
+            async function carregarDados() {
                 if (window.carregarDoFirebase) {
                     const fbData = await window.carregarDoFirebase();
                     if (fbData) {
                         dados = fbData.dados || [];
                         valorLitro = fbData.valorLitro || 0.00;
                         dataPagamento = fbData.dataPagamento || '---';
-
-                        localStorage.setItem('dadosLeiteCompacto', JSON.stringify(dados));
-                        localStorage.setItem('valorLitroCompacto', valorLitro);
-                        localStorage.setItem('dataPagamentoCompacto', dataPagamento);
-
-                        renderizarDados();
-                        alert('Dados carregados da nuvem com sucesso!');
                     } else {
-                        alert('Nenhum dado encontrado na nuvem.');
+                        dados = JSON.parse(localStorage.getItem('dadosLeiteCompacto')) || [];
+                        valorLitro = parseFloat(localStorage.getItem('valorLitroCompacto')) || 0.00;
+                        dataPagamento = localStorage.getItem('dataPagamentoCompacto') || '---';
                     }
                 }
+                valorLitroInput.value = valorLitro;
+                dataPagamentoSpan.textContent = dataPagamento;
+                inicializarTabela();
+            }
+
+            await carregarDados();
+
+            // EVENTOS
+            document.getElementById('toggle-dark-mode').addEventListener('click', () => {
+                const isDark = document.body.getAttribute('data-theme') === 'dark';
+                document.body.setAttribute('data-theme', isDark ? '' : 'dark');
             });
 
-            // Carrega dados iniciais do localStorage
-            dados = JSON.parse(localStorage.getItem('dadosLeiteCompacto')) || [];
-            valorLitro = parseFloat(localStorage.getItem('valorLitroCompacto')) || 0.00;
-            dataPagamento = localStorage.getItem('dataPagamentoCompacto') || '---';
-
-            valorLitroInput.value = valorLitro;
-            dataPagamentoSpan.textContent = dataPagamento;
-
-            // Inicializa a tabela ao carregar a página
-            inicializarTabela();
-
-            if (darkMode) document.body.setAttribute('data-theme', 'dark');
-
-            btnAdicionar.addEventListener('click', () => { adicionarLinha(); corpoTabela.lastElementChild.querySelector('.input-data').focus(); });
+            document.getElementById('btn-adicionar').addEventListener('click', () => adicionarLinha());
             valorLitroInput.addEventListener('input', salvarEAtualizar);
+            document.getElementById('btn-imprimir').addEventListener('click', () => window.print());
             
-            btnLimpar.addEventListener('click', () => { 
-                if(confirm('Limpar dados?')) { 
-                    dados = []; 
-                    localStorage.removeItem('dadosLeiteCompacto'); 
-                    localStorage.removeItem('dataPagamentoCompacto'); 
-                    dataPagamentoSpan.textContent = '---'; 
-                    
-                    if (window.salvarNoFirebase) {
-                        window.salvarNoFirebase(dados, valorLitro, '---');
-                    }
-                    
-                    inicializarTabela(); 
-                } 
+            document.getElementById('btn-pagar').addEventListener('click', () => {
+                const hoje = new Date().toLocaleDateString('pt-BR');
+                dataPagamentoSpan.textContent = hoje;
+                salvarEAtualizar();
             });
-            
-            btnPagar.addEventListener('click', () => { 
-                const h = new Date().toLocaleDateString('pt-BR'); 
-                dataPagamentoSpan.textContent = h; 
-                localStorage.setItem('dataPagamentoCompacto', h); 
-                
-                if (window.salvarNoFirebase) {
-                    window.salvarNoFirebase(dados, valorLitro, h);
+
+            document.getElementById('btn-limpar').addEventListener('click', () => {
+                if(confirm('Limpar tudo?')) {
+                    dados = [];
+                    dataPagamentoSpan.textContent = '---';
+                    salvarEAtualizar();
+                    inicializarTabela();
                 }
-            });
-            
-            btnImprimir.addEventListener('click', () => window.print());
-            btnDarkMode.addEventListener('click', () => { 
-                darkMode = !darkMode; 
-                document.body.setAttribute('data-theme', darkMode ? 'dark' : ''); 
-                localStorage.setItem('darkModeCompacto', darkMode); 
             });
         });
     </script>
-
-</body></html>
+</body>
+</html>
