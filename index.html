@@ -219,9 +219,101 @@
             body { background: white; color: black !important; padding: 0; }
             .container { box-shadow: none; border: none; width: 100%; padding: 0; }
         }
+
+        /* Tela de Login */
+        #login-overlay {
+            display: flex; position: fixed; inset: 0; z-index: 999;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 60%, #3b82f6 100%);
+            align-items: center; justify-content: center; padding: 20px;
+        }
+        #login-box {
+            background: #fff; border-radius: 16px; padding: 28px 24px;
+            width: 100%; max-width: 300px;
+            box-shadow: 0 12px 40px rgba(0,0,0,.4);
+            display: flex; flex-direction: column; align-items: center; gap: 14px;
+        }
+        #login-box .login-icon { font-size: 40px; line-height: 1; }
+        #login-box h2 { font-size: 17px; font-weight: 700; color: #2563eb; text-align: center; }
+        #login-box p { font-size: 11px; color: #666; text-align: center; margin-top: -8px; }
+        #login-box input[type=password] {
+            width: 100%; padding: 10px 12px; border: 1.5px solid #d1d5db;
+            border-radius: 10px; font-size: 16px; text-align: center;
+            background: #f9fafb; color: #1f2937; outline: none;
+            letter-spacing: 4px; font-family: var(--font-mono);
+        }
+        #login-box input[type=password]:focus { border-color: #2563eb; }
+        #login-box .btn-entrar {
+            width: 100%; padding: 10px; background: #2563eb; color: #fff;
+            border: none; border-radius: 10px; font-size: 14px; font-weight: 700;
+            cursor: pointer; transition: background .15s; text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        #login-box .btn-entrar:hover { background: #1d4ed8; }
+        #login-box .lembrar-wrap {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 11px; color: #444; cursor: pointer; user-select: none;
+        }
+        #login-box .lembrar-wrap input[type=checkbox] {
+            width: 15px; height: 15px; accent-color: #2563eb; cursor: pointer;
+        }
+        #login-erro {
+            font-size: 11px; color: #dc2626; font-weight: 600;
+            min-height: 16px; text-align: center;
+        }
+        [data-theme="dark"] #login-box { background: #1f2937; }
+        [data-theme="dark"] #login-box h2 { color: #3b82f6; }
+        [data-theme="dark"] #login-box p { color: #9ca3af; }
+        [data-theme="dark"] #login-box input[type=password] { background: #374151; border-color: #4b5563; color: #f9fafb; }
+        [data-theme="dark"] #login-box .lembrar-wrap { color: #d1d5db; }
     </style>
 </head>
 <body data-theme="dark">
+
+<div id="login-overlay">
+  <div id="login-box">
+    <div class="login-icon">🥛</div>
+    <h2>Controle de Leite</h2>
+    <p>Digite a senha para acessar</p>
+    <input type="password" id="login-senha" placeholder="••••" maxlength="20"
+      onkeydown="if(event.key==='Enter') tentarLogin()">
+    <div id="login-erro"></div>
+    <label class="lembrar-wrap">
+      <input type="checkbox" id="login-lembrar" checked>
+      Não pedir senha neste dispositivo
+    </label>
+    <button class="btn-entrar" onclick="tentarLogin()">Entrar</button>
+  </div>
+</div>
+
+<script>
+  const _SENHA = "6311";
+  const _TOKEN_KEY = "leite_auth_token";
+  const _TOKEN_VAL = btoa("leite_ok_" + _SENHA);
+
+  function tentarLogin() {
+    const digitada = document.getElementById('login-senha').value;
+    if (digitada === _SENHA) {
+      if (document.getElementById('login-lembrar').checked) {
+        localStorage.setItem(_TOKEN_KEY, _TOKEN_VAL);
+      }
+      document.getElementById('login-overlay').style.display = 'none';
+    } else {
+      document.getElementById('login-erro').textContent = 'Senha incorreta. Tente novamente.';
+      document.getElementById('login-senha').value = '';
+      document.getElementById('login-senha').focus();
+    }
+  }
+
+  if (localStorage.getItem(_TOKEN_KEY) === _TOKEN_VAL) {
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('login-overlay').style.display = 'none';
+    });
+  } else {
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('login-senha').focus();
+    });
+  }
+</script>
     <div class="container">
         <div class="no-print" style="text-align: right; margin-bottom: 10px;">
             <button id="toggle-dark-mode" class="btn" style="padding: 5px 12px;">MODO ESCURO</button>
@@ -327,12 +419,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
-            const SENHA_ACESSO = "6311";
-            const senhaDigitada = prompt("Digite a senha:");
-            if (senhaDigitada !== SENHA_ACESSO) {
-                document.body.innerHTML = "<h2 style='text-align:center;margin-top:50px;color:red'>Acesso Negado</h2>";
-                return;
-            }
 
             const corpoTabela = document.getElementById('corpo-tabela');
             const valorLitroInput = document.getElementById('valor-litro');
