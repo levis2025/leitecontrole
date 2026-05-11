@@ -216,8 +216,26 @@
 
         @media print {
             .no-print, .btn, #toggle-dark-mode { display: none !important; }
-            body { background: white; color: black !important; padding: 0; }
+            body { background: white !important; color: black !important; padding: 0; }
             .container { box-shadow: none; border: none; width: 100%; padding: 0; }
+            
+            /* Correção para inputs no PDF */
+            input {
+                color: black !important;
+                background: transparent !important;
+                border: none !important;
+                padding: 0 !important;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                appearance: none;
+                width: auto !important;
+            }
+            
+            /* Ajuste específico para data e número no PDF */
+            .input-data, #valor-litro, .input-litros {
+                font-weight: bold !important;
+                font-size: 14px !important;
+            }
         }
 
         /* Tela de Login */
@@ -274,8 +292,7 @@
     <div class="login-icon">🥛</div>
     <h2>Controle de Leite</h2>
     <p>Digite a senha para acessar</p>
-    <input type="password" id="login-senha" placeholder="••••" maxlength="20"
-      onkeydown="if(event.key==='Enter') tentarLogin()">
+    <input type="password" id="login-senha" placeholder="••••" maxlength="20">
     <div id="login-erro"></div>
     <label class="lembrar-wrap">
       <input type="checkbox" id="login-lembrar" checked>
