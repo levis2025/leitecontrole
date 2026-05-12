@@ -450,7 +450,15 @@
             function adicionarLinha(item = { data: '', litros: '' }) {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td><input type="date" class="input-data" value="${item.data}"></td>
+                    <td>
+                        <div style="position: relative; min-width: 160px;">
+                            <input type="date" class="input-data" value="${item.data}" style="position: absolute; opacity: 0; width: 100%; height: 100%; cursor: pointer; z-index: 2; top: 0; left: 0;">
+                            <div class="data-display" style="display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--container-bg); min-height: 34px;">
+                                <span class="data-text"></span>
+                                <span style="font-size: 12px; opacity: 0.5;">📅</span>
+                            </div>
+                        </div>
+                    </td>
                     <td><input type="number" step="0.1" class="input-litros" value="${item.litros}" style="width: 60px;"></td>
                     <td class="valor-unitario">R$ 0,00</td>
                     <td class="total-linha">R$ 0,00</td>
@@ -485,6 +493,19 @@
                     const dataVal = row.querySelector('.input-data').value;
                     const totalLinha = litros * valorLitro;
                     totalL += litros; totalP += totalLinha;
+
+                    // Atualiza o texto da data formatada (Ex: Segunda dia 04)
+                    const dataTextSpan = row.querySelector('.data-text');
+                    if (dataTextSpan) {
+                        if (dataVal) {
+                            const d = new Date(dataVal + 'T00:00:00');
+                            const ds = d.toLocaleDateString('pt-BR', { weekday: 'long' }).split('-')[0];
+                            dataTextSpan.textContent = ds.charAt(0).toUpperCase() + ds.slice(1) + ', ' + d.getDate().toString().padStart(2, '0');
+                        } else {
+                            dataTextSpan.textContent = 'Selecionar...';
+                        }
+                    }
+
                     row.querySelector('.valor-unitario').textContent = `R$ ${valorLitro.toFixed(2).replace('.', ',')}`;
                     row.querySelector('.total-linha').textContent = `R$ ${totalLinha.toFixed(2).replace('.', ',')}`;
                     if (dataVal) {
