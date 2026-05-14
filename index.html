@@ -671,14 +671,36 @@
         }
 
         @media print {
-            .no-print, 
-            .cow-icon,
-            #btn-adicionar, 
-            .btn-excluir, 
-            #btn-pagar, 
-            #btn-limpar, 
-            #toggle-dark-mode { 
-                display: none !important;}
+					 .no-print, 
+			#btn-adicionar, 
+			.btn-excluir, 
+			#btn-pagar, 
+			#btn-limpar, 
+			#toggle-dark-mode { 
+				display: none !important;
+			}
+
+					.cow-icon {
+						display: block !important;
+						margin: 0 auto 10px auto !important;
+						font-size: 40px !important;
+					}
+
+					.print-only-title {
+						display: block !important;
+						font-size: 1.2rem;
+						font-weight: 800;
+						text-transform: uppercase;
+						letter-spacing: 1.5px;
+						margin-bottom: 15px;
+						color: black !important;
+						text-align: center;
+					}
+
+					.subtitle-text {
+						text-align: left !important;
+						margin-top: 5px !important;
+					}
             body {
                 background: white !important;
                 color: black !important;
@@ -765,6 +787,7 @@
                 font-size: 12pt !important;
                 font-weight: 400 !important;
             }
+
          }
 
 		
@@ -819,8 +842,9 @@ table th {
 
     <header>
         <div class="cow-icon">🥛</div>
+        <div class="print-only-title" style="display: none;">RELATÓRIO DE LEITE</div>
         <h1>Relatório do Leite</h1>
-        <p>Leite mensal de Eunice</p>
+        <p class="subtitle-text">Leite mensal de Eunice</p>
         <div class="header-info">
             <div class="input-group">
                 <span class="input-label">Período:</span>
@@ -873,7 +897,7 @@ table th {
             </div>
             <div class="summary-item">
                 <label>Data do Pag.</label>
-                <span id="data-pagamento" style="color: var(--success-color);">14/05/2026 às 12:47</span>
+                <span id="data-pagamento" style="color: var(--success-color);">14/05/2026 às 19:25</span>
             </div>
         </div>
         <p class="">"O Senhor é o meu Pastor; e nada me faltará."</p>
