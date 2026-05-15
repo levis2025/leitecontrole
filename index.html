@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- saved from url=(0042)https://levis2025.github.io/leitecontrole/ -->
 <html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -243,7 +242,7 @@
             box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
         }
 
-        /* === CORREÇÃO: Inputs limpos (data e litros) iguais ao texto puro === */
+        /* Correção: Inputs limpos */
         .data-display,
         input.input-litros {
             border: none !important;
@@ -279,7 +278,6 @@
             margin: 0;
         }
 
-        /* Foco sutil para acessibilidade (opcional) */
         input.input-litros:focus-visible {
             outline: 1px dashed rgba(79, 70, 229, 0.4);
             outline-offset: 2px;
@@ -701,6 +699,17 @@
             left: 0;
         }
 
+        /* CORREÇÃO AQUI: Força o ícone de calendário a esticar por todo o campo no PC */
+        .date-cell input[type="date"]::-webkit-calendar-picker-indicator {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
         /* Responsive */
         @media (max-width: 640px) {
             body { padding: 12px 10px; }
@@ -884,37 +893,35 @@
             }
         }
 
-/* --- Ajuste: esconde linhas na tela, mostra no PDF --- */
-table tr {
-  border-bottom: 1px solid transparent !important;
-}
+        /* Ajuste: esconde linhas na tela, mostra no PDF */
+        table tr {
+          border-bottom: 1px solid transparent !important;
+        }
 
-table td, 
-table th {
-  border: none !important;
-}
+        table td, 
+        table th {
+          border: none !important;
+        }
 
-@media print {
-  table tr {
-    border-bottom: 1px solid var(--border-color) !important;
-  }
-  
-  table td,
-  table th {
-    border-bottom: 1px solid var(--border-color) !important;
-  }
-  
-  .no-print {
-    display: none !important;
-  }
-}
-/* --- Fim do ajuste --- */
-
+        @media print {
+          table tr {
+            border-bottom: 1px solid var(--border-color) !important;
+          }
+          
+          table td,
+          table th {
+            border-bottom: 1px solid var(--border-color) !important;
+          }
+          
+          .no-print {
+            display: none !important;
+          }
+        }
     </style>
 </head>
 <body data-theme="dark">
 
-<div id="login-overlay" style="opacity: 0; display: none;">
+<div id="login-overlay">
     <div id="login-box">
         <div class="login-icon">🥛</div>
         <h2>Controle de Leite</h2>
@@ -941,7 +948,7 @@ table th {
         <div class="header-info">
             <div class="input-group">
                 <span class="input-label">Período:</span>
-                <span class="highlight" id="mes-referencia">Maio de 2026</span>
+                <span class="highlight" id="mes-referencia">---</span>
             </div>
             <div class="input-group">
                 <span class="input-label">Preço do Litro:</span>
@@ -972,7 +979,8 @@ table th {
                         <th class="no-print">Ações</th>
                     </tr>
                 </thead>
-                <tbody id="corpo-tabela"><tr style="animation-delay: 0ms;"><td><div class="date-cell"><input type="date" class="input-data" value="2026-05-04"><div class="data-display"><span class="data-text">Segunda, 04</span><span class="icon-calendar" style="font-size:14px;opacity:0.5;">📅</span></div></div></td><td style="text-align:center;"><input type="number" step="0.1" class="input-litros" value="2" style="width:65px;text-align:center;font-weight:500;"></td><td style="white-space:nowrap;font-family:var(--font-mono);color:var(--text-secondary);font-size:0.9rem;">R$ 3,50</td><td style="white-space:nowrap;font-family:var(--font-mono);font-weight:600;color:var(--text-color);font-size:0.9rem;">R$ 7,00</td><td class="no-print"><button class="btn btn-danger btn-remover" style="padding:5px 12px;font-size:0.68rem;border-radius:6px;">✕ Excluir</button></td></tr><tr style="animation-delay: 50ms;"><td><div class="date-cell"><input type="date" class="input-data" value="2026-05-11"><div class="data-display"><span class="data-text">Segunda, 11</span><span class="icon-calendar" style="font-size:14px;opacity:0.5;">📅</span></div></div></td><td style="text-align:center;"><input type="number" step="0.1" class="input-litros" value="2" style="width:65px;text-align:center;font-weight:500;"></td><td style="white-space:nowrap;font-family:var(--font-mono);color:var(--text-secondary);font-size:0.9rem;">R$ 3,50</td><td style="white-space:nowrap;font-family:var(--font-mono);font-weight:600;color:var(--text-color);font-size:0.9rem;">R$ 7,00</td><td class="no-print"><button class="btn btn-danger btn-remover" style="padding:5px 12px;font-size:0.68rem;border-radius:6px;">✕ Excluir</button></td></tr></tbody>
+                <tbody id="corpo-tabela">
+                    </tbody>
             </table>
         </div>
     </main>
@@ -982,15 +990,15 @@ table th {
         <div class="summary-grid">
             <div class="summary-item">
                 <label>Volume Total</label>
-                <span id="total-litros">4.00</span> L
+                <span id="total-litros">0.00</span> L
             </div>
             <div class="summary-item">
                 <label>Total a Pagar</label>
-                <span id="total-pago">R$ 14,00</span>
+                <span id="total-pago">R$ 0,00</span>
             </div>
             <div class="summary-item">
                 <label>Data do Pag.</label>
-                <span id="data-pagamento" style="color: var(--success-color);">14/05/2026 às 22:27</span>
+                <span id="data-pagamento" style="color: var(--success-color);">---</span>
             </div>
         </div>
         <p class="">"O Senhor é o meu Pastor; e nada me faltará."</p>
@@ -1013,19 +1021,30 @@ table th {
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    window.salvarNoFirebase = async function(dados, valorLitro, dataPagamento) {
-        try { await setDoc(doc(db, "controle", "leite"), { dados, valorLitro, dataPagamento }); } catch (e) {}
-    };
+    async function salvarNoFirebase(dados, valorLitro, dataPagamento) {
+        try {
+            await setDoc(doc(db, "controle", "leite"), { dados, valorLitro, dataPagamento });
+        } catch (e) {
+            console.error("Erro ao salvar:", e);
+        }
+    }
 
-    window.carregarDoFirebase = async function() {
-        try { const docSnap = await getDoc(doc(db, "controle", "leite")); return docSnap.exists() ? docSnap.data() : null; } catch (e) { return null; }
-    };
-</script>
+    async function carregarDoFirebase() {
+        try {
+            const docSnap = await getDoc(doc(db, "controle", "leite"));
+            return docSnap.exists() ? docSnap.data() : null;
+        } catch (e) {
+            console.error("Erro ao carregar:", e);
+            return null;
+        }
+    }
 
-<script>
+    // ==========================================
+    // SISTEMA DE LOGIN E SEGURANÇA
+    // ==========================================
     const _SENHA = "6311";
 
-    function tentarLogin() {
+    window.tentarLogin = function() {
         const digitada = document.getElementById('login-senha').value;
         if (digitada === _SENHA) {
             if (document.getElementById('login-lembrar').checked) {
@@ -1037,154 +1056,167 @@ table th {
         } else {
             document.getElementById('login-erro').textContent = 'Senha incorreta.';
         }
-    }
+    };
 
     if (localStorage.getItem("leite_auth_token") === btoa("leite_ok_" + _SENHA)) {
-        document.addEventListener('DOMContentLoaded', () => {
-            const overlay = document.getElementById('login-overlay');
+        const overlay = document.getElementById('login-overlay');
+        if(overlay) {
             overlay.style.opacity = '0';
             setTimeout(() => { overlay.style.display = 'none'; }, 300);
-        });
+        }
     }
 
-    document.addEventListener('DOMContentLoaded', async () => {
-        const corpoTabela = document.getElementById('corpo-tabela');
-        const valorLitroInput = document.getElementById('valor-litro');
-        const totalLitrosSpan = document.getElementById('total-litros');
-        const totalPagoSpan = document.getElementById('total-pago');
-        const mesReferenciaSpan = document.getElementById('mes-referencia');
-        const dataPagamentoSpan = document.getElementById('data-pagamento');
+    // ==========================================
+    // LÓGICA PRINCIPAL DA TABELA E CÁLCULOS
+    // ==========================================
+    const corpoTabela = document.getElementById('corpo-tabela');
+    const valorLitroInput = document.getElementById('valor-litro');
+    const totalLitrosSpan = document.getElementById('total-litros');
+    const totalPagoSpan = document.getElementById('total-pago');
+    const mesReferenciaSpan = document.getElementById('mes-referencia');
+    const dataPagamentoSpan = document.getElementById('data-pagamento');
 
-        let valorLitro = 0.00;
+    let valorLitro = 0.00;
 
-        function atualizarTotais() {
-            let totalL = 0, totalP = 0;
-            const meses = new Set();
-            corpoTabela.querySelectorAll('tr').forEach(row => {
-                const litros = parseFloat(row.querySelector('.input-litros').value) || 0;
-                const dataVal = row.querySelector('.input-data').value;
-                const totalLinha = litros * valorLitro;
-                totalL += litros;
-                totalP += totalLinha;
-                const dataTextSpan = row.querySelector('.data-text');
-                if (dataVal) {
-                    const d = new Date(dataVal + 'T00:00:00');
-                    const ds = d.toLocaleDateString('pt-BR', { weekday: 'long' }).split('-')[0];
-                    dataTextSpan.textContent = ds.charAt(0).toUpperCase() + ds.slice(1) + ', ' + d.getDate().toString().padStart(2, '0');
-                    const m = d.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
-                    meses.add(m.charAt(0).toUpperCase() + m.slice(1));
-                } else {
-                    dataTextSpan.textContent = 'Selecionar...';
-                }
-                row.cells[2].textContent = 'R$ ' + valorLitro.toFixed(2).replace('.', ',');
-                row.cells[3].textContent = 'R$ ' + totalLinha.toFixed(2).replace('.', ',');
-            });
-            totalLitrosSpan.textContent = totalL.toFixed(2);
-            totalPagoSpan.textContent = 'R$ ' + totalP.toFixed(2).replace('.', ',');
-            mesReferenciaSpan.textContent = meses.size > 0 ? Array.from(meses).join(' / ') : '---';
-        }
-
-        function salvarEAtualizar() {
-            const novasLinhas = [];
-            corpoTabela.querySelectorAll('tr').forEach(row => {
-                const data = row.querySelector('.input-data').value;
-                const litros = row.querySelector('.input-litros').value;
-                if (data || litros) novasLinhas.push({ data, litros });
-            });
-            valorLitro = parseFloat(valorLitroInput.value) || 0;
-            if (window.salvarNoFirebase) window.salvarNoFirebase(novasLinhas, valorLitro, dataPagamentoSpan.textContent);
-            atualizarTotais();
-        }
-
-        function adicionarLinha(item) {
-            item = item || { data: '', litros: '' };
-            const tr = document.createElement('tr');
-            tr.style.animationDelay = (corpoTabela.children.length * 50) + 'ms';
-            tr.innerHTML =
-                '<td>' +
-                    '<div class="date-cell">' +
-                        '<input type="date" class="input-data" value="' + item.data + '">' +
-                        '<div class="data-display">' +
-                            '<span class="data-text"></span>' +
-                            '<span class="icon-calendar" style="font-size:14px;opacity:0.5;">📅</span>' +
-                        '</div>' +
-                    '</div>' +
-                '</td>' +
-                '<td style="text-align:center;">' +
-                    '<input type="number" step="0.1" class="input-litros" value="' + item.litros + '" style="width:65px;text-align:center;font-weight:500;">' +
-                '</td>' +
-                '<td style="white-space:nowrap;font-family:var(--font-mono);color:var(--text-secondary);font-size:0.9rem;">R$ 0,00</td>' +
-                '<td style="white-space:nowrap;font-family:var(--font-mono);font-weight:600;color:var(--text-color);font-size:0.9rem;">R$ 0,00</td>' +
-                '<td class="no-print"><button class="btn btn-danger btn-remover" style="padding:5px 12px;font-size:0.68rem;border-radius:6px;">✕ Excluir</button></td>';
-
-            corpoTabela.appendChild(tr);
-
-            // Anexar event listeners
-            tr.querySelector('.input-data').addEventListener('change', salvarEAtualizar);
-            tr.querySelector('.input-litros').addEventListener('input', salvarEAtualizar);
-            tr.querySelector('.btn-remover').addEventListener('click', function() {
-                tr.style.animation = 'slideOut 0.25s ease both';
-                setTimeout(function() {
-                    tr.remove();
-                    salvarEAtualizar();
-                }, 220);
-            });
-
-            atualizarTotais();
-        }
-
-        // Limpar tabela
-        corpoTabela.innerHTML = '';
-
-        // Carregar do Firebase
-        try {
-            const fbData = await window.carregarDoFirebase();
-            if (fbData && fbData.dados && fbData.dados.length > 0) {
-                valorLitro = fbData.valorLitro || 0;
-                dataPagamentoSpan.textContent = fbData.dataPagamento || '---';
-                valorLitroInput.value = valorLitro;
-                fbData.dados.forEach(function(item) { adicionarLinha(item); });
+    function atualizarTotais() {
+        let totalL = 0, totalP = 0;
+        const meses = new Set();
+        
+        corpoTabela.querySelectorAll('tr').forEach(row => {
+            const litros = parseFloat(row.querySelector('.input-litros').value) || 0;
+            const dataVal = row.querySelector('.input-data').value;
+            const totalLinha = litros * valorLitro;
+            
+            totalL += litros;
+            totalP += totalLinha;
+            
+            const dataTextSpan = row.querySelector('.data-text');
+            if (dataVal) {
+                // Ao adicionar o horário 'T00:00:00', isolamos a interferência de fusos horários indesejados.
+                const d = new Date(dataVal + 'T00:00:00');
+                const ds = d.toLocaleDateString('pt-BR', { weekday: 'long' }).split('-')[0];
+                dataTextSpan.textContent = ds.charAt(0).toUpperCase() + ds.slice(1) + ', ' + d.getDate().toString().padStart(2, '0');
+                
+                const m = d.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+                meses.add(m.charAt(0).toUpperCase() + m.slice(1));
             } else {
-                adicionarLinha();
+                dataTextSpan.textContent = 'Selecionar...';
             }
-        } catch(e) {
-            adicionarLinha();
-        }
+            
+            row.cells[2].textContent = 'R$ ' + valorLitro.toFixed(2).replace('.', ',');
+            row.cells[3].textContent = 'R$ ' + totalLinha.toFixed(2).replace('.', ',');
+        });
+        
+        totalLitrosSpan.textContent = totalL.toFixed(2);
+        totalPagoSpan.textContent = 'R$ ' + totalP.toFixed(2).replace('.', ',');
+        mesReferenciaSpan.textContent = meses.size > 0 ? Array.from(meses).join(' / ') : '---';
+    }
+
+    function salvarEAtualizar() {
+        const novasLinhas = [];
+        corpoTabela.querySelectorAll('tr').forEach(row => {
+            const data = row.querySelector('.input-data').value;
+            const litros = row.querySelector('.input-litros').value;
+            if (data || litros) novasLinhas.push({ data, litros });
+        });
+        
+        valorLitro = parseFloat(valorLitroInput.value) || 0;
+        
+        // Chamada confiável de salvamento no banco agora que está tudo integrado
+        salvarNoFirebase(novasLinhas, valorLitro, dataPagamentoSpan.textContent);
         atualizarTotais();
+    }
 
-        // Toggle tema
-        document.getElementById('toggle-dark-mode').addEventListener('click', function() {
-            var body = document.body;
-            body.setAttribute('data-theme', body.getAttribute('data-theme') === 'dark' ? '' : 'dark');
-        });
+    function adicionarLinha(item) {
+        item = item || { data: '', litros: '' };
+        const tr = document.createElement('tr');
+        tr.style.animationDelay = (corpoTabela.children.length * 50) + 'ms';
+        tr.innerHTML =
+            '<td>' +
+                '<div class="date-cell">' +
+                    // CORREÇÃO AQUI: onclick="try{this.showPicker()}catch(e){}" força a abertura no computador
+                    '<input type="date" class="input-data" value="' + item.data + '" onclick="try{this.showPicker()}catch(e){}" onfocus="try{this.showPicker()}catch(e){}">' +
+                    '<div class="data-display">' +
+                        '<span class="data-text"></span>' +
+                        '<span class="icon-calendar" style="font-size:14px;opacity:0.5;">📅</span>' +
+                    '</div>' +
+                '</div>' +
+            '</td>' +
+            '<td style="text-align:center;">' +
+                '<input type="number" step="0.1" class="input-litros" value="' + item.litros + '" style="width:65px;text-align:center;font-weight:500;">' +
+            '</td>' +
+            '<td style="white-space:nowrap;font-family:var(--font-mono);color:var(--text-secondary);font-size:0.9rem;">R$ 0,00</td>' +
+            '<td style="white-space:nowrap;font-family:var(--font-mono);font-weight:600;color:var(--text-color);font-size:0.9rem;">R$ 0,00</td>' +
+            '<td class="no-print"><button class="btn btn-danger btn-remover" style="padding:5px 12px;font-size:0.68rem;border-radius:6px;">✕ Excluir</button></td>';
 
-        // Botão Adicionar
-        document.getElementById('btn-adicionar').addEventListener('click', function() { adicionarLinha(); });
+        corpoTabela.appendChild(tr);
 
-        // Input valor litro
-        valorLitroInput.addEventListener('input', salvarEAtualizar);
-
-        // Botão Imprimir
-        document.getElementById('btn-imprimir').addEventListener('click', function() { window.print(); });
-
-        // Botão Registrar Pagamento
-        document.getElementById('btn-pagar').addEventListener('click', function() {
-            var agora = new Date();
-            dataPagamentoSpan.textContent = agora.toLocaleDateString('pt-BR') + ' às ' + agora.getHours().toString().padStart(2, '0') + ':' + agora.getMinutes().toString().padStart(2, '0');
-            salvarEAtualizar();
-        });
-
-        // Botão Limpar
-        document.getElementById('btn-limpar').addEventListener('click', function() {
-            if (confirm('Deseja realmente apagar todos os dados deste mês?')) {
-                corpoTabela.innerHTML = '';
-                dataPagamentoSpan.textContent = '---';
-                adicionarLinha();
+        // Atribuição exata de eventos baseada no seu escopo
+        tr.querySelector('.input-data').addEventListener('change', salvarEAtualizar);
+        tr.querySelector('.input-litros').addEventListener('input', salvarEAtualizar);
+        tr.querySelector('.btn-remover').addEventListener('click', function() {
+            tr.style.animation = 'slideOut 0.25s ease both';
+            setTimeout(function() {
+                tr.remove();
                 salvarEAtualizar();
-            }
+            }, 220);
         });
-    });
-</script>
 
+        atualizarTotais();
+    }
+
+    // ==========================================
+    // INICIALIZAÇÃO SEGURA (AWAIT BLOCKING)
+    // ==========================================
+    corpoTabela.innerHTML = '';
+    
+    // O sistema aguardará os dados do Firebase antes de liberar a edição para o usuário.
+    const fbData = await carregarDoFirebase();
+    
+    if (fbData && fbData.dados && fbData.dados.length > 0) {
+        valorLitro = fbData.valorLitro || 0;
+        dataPagamentoSpan.textContent = fbData.dataPagamento || '---';
+        valorLitroInput.value = valorLitro;
+        fbData.dados.forEach(function(item) { adicionarLinha(item); });
+    } else {
+        adicionarLinha();
+    }
+    
+    atualizarTotais();
+
+    // ==========================================
+    // EVENTOS DOS BOTÕES E INTERFACE
+    // ==========================================
+    document.getElementById('toggle-dark-mode').addEventListener('click', function() {
+        var body = document.body;
+        body.setAttribute('data-theme', body.getAttribute('data-theme') === 'dark' ? '' : 'dark');
+    });
+
+    document.getElementById('btn-adicionar').addEventListener('click', function() { 
+        adicionarLinha(); 
+    });
+    
+    valorLitroInput.addEventListener('input', salvarEAtualizar);
+    
+    document.getElementById('btn-imprimir').addEventListener('click', function() { 
+        window.print(); 
+    });
+
+    document.getElementById('btn-pagar').addEventListener('click', function() {
+        var agora = new Date();
+        dataPagamentoSpan.textContent = agora.toLocaleDateString('pt-BR') + ' às ' + agora.getHours().toString().padStart(2, '0') + ':' + agora.getMinutes().toString().padStart(2, '0');
+        salvarEAtualizar();
+    });
+
+    document.getElementById('btn-limpar').addEventListener('click', function() {
+        if (confirm('Deseja realmente apagar todos os dados deste mês?')) {
+            corpoTabela.innerHTML = '';
+            dataPagamentoSpan.textContent = '---';
+            adicionarLinha();
+            salvarEAtualizar();
+        }
+    });
+
+</script>
 
 </body></html>
