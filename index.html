@@ -135,6 +135,26 @@
                 margin-top: 40px;
                 page-break-before: avoid;
             }
+            /* Remove contornos externos na impressão */
+            .header-info {
+                border: none;
+                box-shadow: none;
+                background: transparent;
+                padding-left: 0;
+                padding-right: 0;
+            }
+            .table-wrapper {
+                border: none;
+                border-radius: 0;
+            }
+            .summary-item {
+                border: none;
+                box-shadow: none;
+                background: transparent;
+            }
+            .summary-item::before {
+                display: none;
+            }
         }
 
         /* Header */
@@ -671,59 +691,87 @@
         }
 
         @media print {
-					 .no-print, 
-			#btn-adicionar, 
-			.btn-excluir, 
-			#btn-pagar, 
-			#btn-limpar, 
-			#toggle-dark-mode { 
-				display: none !important;
-			}
+            .no-print,
+            #btn-adicionar,
+            .btn-excluir,
+            #btn-pagar,
+            #btn-limpar,
+            #toggle-dark-mode {
+                display: none !important;
+            }
 
-					.cow-icon {
-						display: block !important;
-						margin: 0 auto 10px auto !important;
-						font-size: 40px !important;
-					}
+            .cow-icon {
+                display: block !important;
+                margin: 0 auto 4px auto !important;
+                font-size: 28px !important;
+            }
 
-					.print-only-title {
-						display: block !important;
-						font-size: 1.2rem;
-						font-weight: 800;
-						text-transform: uppercase;
-						letter-spacing: 1.5px;
-						margin-bottom: 15px;
-						color: black !important;
-						text-align: center;
-					}
+            header {
+                padding-bottom: 6px !important;
+                margin-bottom: 8px !important;
+            }
 
-					.subtitle-text {
-						text-align: left !important;
-						margin-top: 5px !important;
-					}
+            h1 {
+                display: none !important;
+            }
+
+            .print-only-title {
+                display: block !important;
+                font-size: 1rem;
+                font-weight: 800;
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+                margin-bottom: 6px;
+                color: black !important;
+                text-align: center;
+            }
+
+            .subtitle-text {
+                text-align: left !important;
+                margin-top: 2px !important;
+                font-size: 9pt !important;
+            }
+
             body {
                 background: white !important;
                 color: black !important;
                 padding: 0 !important;
-                font-size: 11pt !important;
+                font-size: 9pt !important;
+                line-height: 1.3 !important;
             }
+
             .container {
                 box-shadow: none !important;
                 border: none !important;
                 width: 100% !important;
                 max-width: none !important;
-                padding: 10px !important;
+                padding: 8px 12px !important;
                 background: white !important;
                 border-radius: 0 !important;
             }
+
             .container::before { display: none !important; }
 
-            /* Esconde o input de date nativo no print */
+            .header-info {
+                border: none !important;
+                box-shadow: none !important;
+                background: transparent !important;
+                outline: none !important;
+                padding: 4px 0 !important;
+                margin-top: 4px !important;
+            }
+
+            .table-wrapper {
+                border: none !important;
+                box-shadow: none !important;
+                outline: none !important;
+                margin-bottom: 8px !important;
+            }
+
             .date-cell input[type="date"] {
                 display: none !important;
             }
 
-            /* Remove borda e fundo da div de data - fica apenas o texto */
             .data-display {
                 border: none !important;
                 background: transparent !important;
@@ -732,19 +780,16 @@
                 pointer-events: none !important;
             }
 
-            /* Esconde o ícone de calendário */
             .icon-calendar {
                 display: none !important;
             }
 
-            /* Garante que o texto da data fique visível e limpo */
             .data-text {
                 font-weight: 400 !important;
                 color: black !important;
-                font-size: 11pt !important;
+                font-size: 9pt !important;
             }
 
-            /* Remove contorno do campo de litros */
             input.input-litros {
                 border: none !important;
                 background: transparent !important;
@@ -755,9 +800,9 @@
                 -webkit-text-fill-color: black !important;
                 box-shadow: none !important;
                 outline: none !important;
+                font-size: 9pt !important;
             }
 
-            /* Remove seta do input number */
             input.input-litros::-webkit-outer-spin-button,
             input.input-litros::-webkit-inner-spin-button {
                 -webkit-appearance: none !important;
@@ -767,28 +812,53 @@
             input.input-litros { -moz-appearance: textfield !important; }
 
             td {
-                padding: 4px 8px !important;
-                border-bottom: 1px solid #999 !important;
-                font-size: 11pt !important;
+                padding: 2px 6px !important;
+                border-bottom: 1px solid #bbb !important;
+                font-size: 9pt !important;
                 font-weight: 400 !important;
                 color: black !important;
-            }
-            th {
-                padding: 6px 8px !important;
-                font-size: 10pt !important;
-                border-bottom: 1px solid #000 !important;
-            }
-            .summary-item {
-                border: 1px solid #ccc !important;
-                padding: 10px !important;
-            }
-            .summary-item::before { display: none !important; }
-            .summary-item span {
-                font-size: 12pt !important;
-                font-weight: 400 !important;
+                line-height: 1.3 !important;
             }
 
-         }
+            th {
+                padding: 3px 6px !important;
+                font-size: 8pt !important;
+                border-bottom: 2px solid #000 !important;
+            }
+
+            .summary-grid {
+                gap: 6px !important;
+                margin-bottom: 8px !important;
+            }
+
+            .summary-item {
+                border: none !important;
+                box-shadow: none !important;
+                background: transparent !important;
+                padding: 4px 6px !important;
+            }
+
+            .summary-item::before { display: none !important; }
+
+            .summary-item label {
+                font-size: 7pt !important;
+                margin-bottom: 2px !important;
+            }
+
+            .summary-item span {
+                font-size: 10pt !important;
+                font-weight: 700 !important;
+            }
+
+            footer {
+                margin-top: 8px !important;
+                padding-top: 6px !important;
+            }
+
+            footer .quote {
+                font-size: 8pt !important;
+            }
+        }
 
 		
 /* --- Ajuste: esconde linhas na tela, mostra no PDF --- */
