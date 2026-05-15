@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leite Mensal de Eunice - Recibo</title>
     <link rel="icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text y=%22.9em%22 font-size=%2290%22&gt;%F0%9F%A5%9B&lt;/text&gt;&lt;/svg&gt;">
-    <link href="./Leite Mensal de Eunice - Recibo_files/css2" rel="stylesheet">
+    <link href="./Leite Mensal de Eunice_files/css2" rel="stylesheet">
     <style>
         :root {
             --bg-color: #f0f2f5;
@@ -135,7 +135,6 @@
                 margin-top: 40px;
                 page-break-before: avoid;
             }
-            /* Remove contornos externos na impressão */
             .header-info {
                 border: none;
                 box-shadow: none;
@@ -220,7 +219,7 @@
             font-weight: 700;
         }
 
-        /* Inputs */
+        /* Inputs genéricos */
         input[type="number"], input[type="password"], input[type="text"] {
             font-family: var(--font-main);
         }
@@ -242,6 +241,49 @@
         input:focus {
             border-color: var(--primary-color);
             box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+        }
+
+        /* === CORREÇÃO: Inputs limpos (data e litros) iguais ao texto puro === */
+        .data-display,
+        input.input-litros {
+            border: none !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            outline: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            font-weight: 400 !important;
+            color: var(--text-color) !important;
+            font-size: 0.9rem !important;
+            font-family: var(--font-mono) !important;
+        }
+
+        .data-display {
+            min-height: auto !important;
+            pointer-events: none !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 4px !important;
+        }
+
+        input.input-litros {
+            text-align: center !important;
+            width: 65px !important;
+            -webkit-appearance: none;
+            -moz-appearance: textfield;
+        }
+
+        input.input-litros::-webkit-outer-spin-button,
+        input.input-litros::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Foco sutil para acessibilidade (opcional) */
+        input.input-litros:focus-visible {
+            outline: 1px dashed rgba(79, 70, 229, 0.4);
+            outline-offset: 2px;
+            border-radius: 4px;
         }
 
         /* Actions Bar */
@@ -659,19 +701,6 @@
             left: 0;
         }
 
-        .data-display {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 14px;
-            border: 1.5px solid var(--border-color);
-            border-radius: var(--radius-sm);
-            background: var(--container-bg);
-            min-height: 38px;
-            transition: all 0.2s;
-            pointer-events: none;
-        }
-
         /* Responsive */
         @media (max-width: 640px) {
             body { padding: 12px 10px; }
@@ -772,12 +801,20 @@
                 display: none !important;
             }
 
-            .data-display {
+            .data-display,
+            input.input-litros {
                 border: none !important;
                 background: transparent !important;
                 padding: 0 !important;
                 min-height: auto !important;
                 pointer-events: none !important;
+                color: black !important;
+                font-weight: 400 !important;
+                opacity: 1 !important;
+                -webkit-text-fill-color: black !important;
+                box-shadow: none !important;
+                outline: none !important;
+                font-size: 13pt !important;
             }
 
             .icon-calendar {
@@ -788,19 +825,6 @@
                 font-weight: 400 !important;
                 color: black !important;
                 font-size: 11pt !important;
-            }
-
-            input.input-litros {
-                border: none !important;
-                background: transparent !important;
-                padding: 0 !important;
-                color: black !important;
-                font-weight: 400 !important;
-                opacity: 1 !important;
-                -webkit-text-fill-color: black !important;
-                box-shadow: none !important;
-                outline: none !important;
-                font-size: 13pt !important;
             }
 
             input.input-litros::-webkit-outer-spin-button,
@@ -860,7 +884,6 @@
             }
         }
 
-		
 /* --- Ajuste: esconde linhas na tela, mostra no PDF --- */
 table tr {
   border-bottom: 1px solid transparent !important;
@@ -887,7 +910,7 @@ table th {
 }
 /* --- Fim do ajuste --- */
 
-</style>
+    </style>
 </head>
 <body data-theme="dark">
 
@@ -949,7 +972,7 @@ table th {
                         <th class="no-print">Ações</th>
                     </tr>
                 </thead>
-                <tbody id="corpo-tabela"><tr style="animation-delay: 0ms;"><td><div class="date-cell"><input type="date" class="input-data" value="2026-05-04"><div class="data-display"><span class="data-text">Segunda, 04</span><span class="icon-calendar" style="font-size:14px;opacity:0.5;">📅</span></div></div></td><td style="text-align:center;"><input type="number" step="0.1" class="input-litros" value="2" style="width:65px;text-align:center;font-weight:500;border:1.5px solid var(--border-color);border-radius:var(--radius-sm);padding:6px;background:var(--container-bg);color:var(--text-color);font-family:var(--font-mono);font-size:14px;outline:none;transition:all 0.2s;"></td><td style="white-space:nowrap;font-family:var(--font-mono);color:var(--text-secondary);font-size:0.9rem;">R$ 3,50</td><td style="white-space:nowrap;font-family:var(--font-mono);font-weight:600;color:var(--text-color);font-size:0.9rem;">R$ 7,00</td><td class="no-print"><button class="btn btn-danger btn-remover" style="padding:5px 12px;font-size:0.68rem;border-radius:6px;">✕ Excluir</button></td></tr><tr style="animation-delay: 50ms;"><td><div class="date-cell"><input type="date" class="input-data" value="2026-05-11"><div class="data-display"><span class="data-text">Segunda, 11</span><span class="icon-calendar" style="font-size:14px;opacity:0.5;">📅</span></div></div></td><td style="text-align:center;"><input type="number" step="0.1" class="input-litros" value="2" style="width:65px;text-align:center;font-weight:500;border:1.5px solid var(--border-color);border-radius:var(--radius-sm);padding:6px;background:var(--container-bg);color:var(--text-color);font-family:var(--font-mono);font-size:14px;outline:none;transition:all 0.2s;"></td><td style="white-space:nowrap;font-family:var(--font-mono);color:var(--text-secondary);font-size:0.9rem;">R$ 3,50</td><td style="white-space:nowrap;font-family:var(--font-mono);font-weight:600;color:var(--text-color);font-size:0.9rem;">R$ 7,00</td><td class="no-print"><button class="btn btn-danger btn-remover" style="padding:5px 12px;font-size:0.68rem;border-radius:6px;">✕ Excluir</button></td></tr></tbody>
+                <tbody id="corpo-tabela"><tr style="animation-delay: 0ms;"><td><div class="date-cell"><input type="date" class="input-data" value="2026-05-04"><div class="data-display"><span class="data-text">Segunda, 04</span><span class="icon-calendar" style="font-size:14px;opacity:0.5;">📅</span></div></div></td><td style="text-align:center;"><input type="number" step="0.1" class="input-litros" value="2" style="width:65px;text-align:center;font-weight:500;"></td><td style="white-space:nowrap;font-family:var(--font-mono);color:var(--text-secondary);font-size:0.9rem;">R$ 3,50</td><td style="white-space:nowrap;font-family:var(--font-mono);font-weight:600;color:var(--text-color);font-size:0.9rem;">R$ 7,00</td><td class="no-print"><button class="btn btn-danger btn-remover" style="padding:5px 12px;font-size:0.68rem;border-radius:6px;">✕ Excluir</button></td></tr><tr style="animation-delay: 50ms;"><td><div class="date-cell"><input type="date" class="input-data" value="2026-05-11"><div class="data-display"><span class="data-text">Segunda, 11</span><span class="icon-calendar" style="font-size:14px;opacity:0.5;">📅</span></div></div></td><td style="text-align:center;"><input type="number" step="0.1" class="input-litros" value="2" style="width:65px;text-align:center;font-weight:500;"></td><td style="white-space:nowrap;font-family:var(--font-mono);color:var(--text-secondary);font-size:0.9rem;">R$ 3,50</td><td style="white-space:nowrap;font-family:var(--font-mono);font-weight:600;color:var(--text-color);font-size:0.9rem;">R$ 7,00</td><td class="no-print"><button class="btn btn-danger btn-remover" style="padding:5px 12px;font-size:0.68rem;border-radius:6px;">✕ Excluir</button></td></tr></tbody>
             </table>
         </div>
     </main>
@@ -967,7 +990,7 @@ table th {
             </div>
             <div class="summary-item">
                 <label>Data do Pag.</label>
-                <span id="data-pagamento" style="color: var(--success-color);">14/05/2026 às 19:25</span>
+                <span id="data-pagamento" style="color: var(--success-color);">14/05/2026 às 22:27</span>
             </div>
         </div>
         <p class="">"O Senhor é o meu Pastor; e nada me faltará."</p>
@@ -1088,7 +1111,7 @@ table th {
                     '</div>' +
                 '</td>' +
                 '<td style="text-align:center;">' +
-                    '<input type="number" step="0.1" class="input-litros" value="' + item.litros + '" style="width:65px;text-align:center;font-weight:500;border:1.5px solid var(--border-color);border-radius:var(--radius-sm);padding:6px;background:var(--container-bg);color:var(--text-color);font-family:var(--font-mono);font-size:14px;outline:none;transition:all 0.2s;">' +
+                    '<input type="number" step="0.1" class="input-litros" value="' + item.litros + '" style="width:65px;text-align:center;font-weight:500;">' +
                 '</td>' +
                 '<td style="white-space:nowrap;font-family:var(--font-mono);color:var(--text-secondary);font-size:0.9rem;">R$ 0,00</td>' +
                 '<td style="white-space:nowrap;font-family:var(--font-mono);font-weight:600;color:var(--text-color);font-size:0.9rem;">R$ 0,00</td>' +
