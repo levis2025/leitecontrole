@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+<!-- saved from url=(0042)https://levis2025.github.io/leitecontrole/ -->
 <html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leite Mensal de Eunice - Recibo</title>
     <link rel="icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text y=%22.9em%22 font-size=%2290%22&gt;%F0%9F%A5%9B&lt;/text&gt;&lt;/svg&gt;">
-    <link href="./Leite Mensal de Eunice_files/css2" rel="stylesheet">
+    <link href="./Leite Mensal de Eunice - Recibo_files/css2" rel="stylesheet">
     <style>
         :root {
             --bg-color: #f0f2f5;
@@ -59,8 +60,8 @@
             padding: 24px 20px;
             transition: background-color 0.4s ease, color 0.4s ease;
             font-family: var(--font-main);
-            font-size: 14px;
-            line-height: 1.6;
+            font-size: 12px;
+            line-height: 0.9;
             min-height: 100vh;
         }
 
@@ -178,7 +179,7 @@
         }
 
         .cow-icon {
-            font-size: 48px;
+            font-size: 35px;
             margin-bottom: 12px;
             display: inline-block;
             animation: fadeIn 0.8s ease 0.2s both;
@@ -715,7 +716,7 @@
             body { padding: 12px 10px; }
             .container { padding: 24px 18px; border-radius: 14px; }
             h1 { font-size: 1.45rem; }
-            .cow-icon { font-size: 40px; }
+            .cow-icon { font-size: 20px; }
             .summary-grid { grid-template-columns: 1fr; gap: 10px; }
             .header-info { flex-direction: column; gap: 12px; padding: 14px 16px; }
             .actions-bar { flex-direction: column; align-items: stretch; }
@@ -921,7 +922,7 @@
 </head>
 <body data-theme="dark">
 
-<div id="login-overlay">
+<div id="login-overlay" style="opacity: 0; display: none;">
     <div id="login-box">
         <div class="login-icon">🥛</div>
         <h2>Controle de Leite</h2>
@@ -948,7 +949,7 @@
         <div class="header-info">
             <div class="input-group">
                 <span class="input-label">Período:</span>
-                <span class="highlight" id="mes-referencia">---</span>
+                <span class="highlight" id="mes-referencia">Maio de 2026</span>
             </div>
             <div class="input-group">
                 <span class="input-label">Preço do Litro:</span>
@@ -979,8 +980,7 @@
                         <th class="no-print">Ações</th>
                     </tr>
                 </thead>
-                <tbody id="corpo-tabela">
-                    </tbody>
+                <tbody id="corpo-tabela"><tr style="animation-delay: 0ms;"><td><div class="date-cell"><input type="date" class="input-data" value="2026-05-04" onclick="try{this.showPicker()}catch(e){}" onfocus="try{this.showPicker()}catch(e){}"><div class="data-display"><span class="data-text">Segunda, 04</span><span class="icon-calendar" style="font-size:14px;opacity:0.5;">📅</span></div></div></td><td style="text-align:center;"><input type="number" step="0.1" class="input-litros" value="2" style="width:65px;text-align:center;font-weight:500;"></td><td style="white-space:nowrap;font-family:var(--font-mono);color:var(--text-secondary);font-size:0.9rem;">R$ 3,50</td><td style="white-space:nowrap;font-family:var(--font-mono);font-weight:600;color:var(--text-color);font-size:0.9rem;">R$ 7,00</td><td class="no-print"><button class="btn btn-danger btn-remover" style="padding:5px 12px;font-size:0.68rem;border-radius:6px;">✕ Excluir</button></td></tr><tr style="animation-delay: 50ms;"><td><div class="date-cell"><input type="date" class="input-data" value="2026-05-11" onclick="try{this.showPicker()}catch(e){}" onfocus="try{this.showPicker()}catch(e){}"><div class="data-display"><span class="data-text">Segunda, 11</span><span class="icon-calendar" style="font-size:14px;opacity:0.5;">📅</span></div></div></td><td style="text-align:center;"><input type="number" step="0.1" class="input-litros" value="2" style="width:65px;text-align:center;font-weight:500;"></td><td style="white-space:nowrap;font-family:var(--font-mono);color:var(--text-secondary);font-size:0.9rem;">R$ 3,50</td><td style="white-space:nowrap;font-family:var(--font-mono);font-weight:600;color:var(--text-color);font-size:0.9rem;">R$ 7,00</td><td class="no-print"><button class="btn btn-danger btn-remover" style="padding:5px 12px;font-size:0.68rem;border-radius:6px;">✕ Excluir</button></td></tr></tbody>
             </table>
         </div>
     </main>
@@ -990,15 +990,15 @@
         <div class="summary-grid">
             <div class="summary-item">
                 <label>Volume Total</label>
-                <span id="total-litros">0.00</span> L
+                <span id="total-litros">4.00</span> L
             </div>
             <div class="summary-item">
                 <label>Total a Pagar</label>
-                <span id="total-pago">R$ 0,00</span>
+                <span id="total-pago">R$ 14,00</span>
             </div>
             <div class="summary-item">
                 <label>Data do Pag.</label>
-                <span id="data-pagamento" style="color: var(--success-color);">---</span>
+                <span id="data-pagamento" style="color: var(--success-color);">15/05/2026 às 12:24</span>
             </div>
         </div>
         <p class="">"O Senhor é o meu Pastor; e nada me faltará."</p>
